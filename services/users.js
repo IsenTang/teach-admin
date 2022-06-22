@@ -54,8 +54,9 @@ async function login(ctx) {
    if (!result) {
       throw new Woops('login-error', '用户名密码错误');
    } else {
+      // * 去掉record，获取用户token（缩短token长度）
       // * 生成token,放入用户信息
-      const token = authService.encode(result);
+      const token = authService.encode(_.omit(result, [ 'record' ]));
       result.token = token;
       return result;
    }
