@@ -1,15 +1,33 @@
-const _ = require('lodash');
 const shopItemsModel = require('../models/shop');
 const Woops = require('../common/error');
+
+async function shopList({ page, limit }) {
+   try {
+      const list = await shopItemsModel.find({
+         query: {},
+         sort: { isDeleted: 1, createdAt: -1 },
+         page,
+         limit,
+      });
+
+      const total = await shopItemsModel.count();
+
+      return {
+         list, total,
+      };
+   } catch (error) {
+      throw new Woops('database-error', error.message);
+   }
+}
 
 /*
  * 添加一个商品
 */
 async function insertShopItem(ctx) {
    try {
-      const { name, price,image } = ctx.request.body;
+      const { name, price, image } = ctx.request.body;
 
-      await shopItemsModel.insertOne({ name, price,image });
+      await shopItemsModel.insertOne({ name, price, image });
    } catch (error) {
       throw new Woops('database-error', error.message);
    }
@@ -22,7 +40,9 @@ async function updateShopItem(ctx) {
    try {
       const { data } = ctx.request.body;
 
-      const { _id, name, price,image } = data;
+      const {
+         _id, name, price, image,
+      } = data;
 
       // 更新
       await shopItemsModel.updateOne({
@@ -32,7 +52,7 @@ async function updateShopItem(ctx) {
          updated: {
             name,
             price,
-            image
+            image,
          },
       });
 
@@ -54,7 +74,7 @@ async function updateShopItem(ctx) {
 */
 async function deleteShopItem(ctx) {
    try {
-      const { id } = ctx.request.body;
+      const { id, isDeleted = true } = ctx.request.body;
 
       // 逻辑删除
       await shopItemsModel.updateOne({
@@ -62,7 +82,7 @@ async function deleteShopItem(ctx) {
             _id: id,
          },
          updated: {
-            isDeleted: true,
+            isDeleted,
          },
       });
    } catch (error) {
@@ -74,4 +94,5 @@ module.exports = {
    insertShopItem,
    updateShopItem,
    deleteShopItem,
+   shopList,
 };

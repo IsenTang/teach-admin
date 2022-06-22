@@ -1,7 +1,10 @@
 const _ = require('lodash');
-const { findOne, insertOne, update } = require('../models/users');
+const {
+   findOne, insertOne, update, find,
+} = require('../models/users');
 const { checkName, checkPassword, getRandomAvatar } = require('../common/utils');
 const Woops = require('../common/error');
+const authService = require('./auth');
 
 async function regist(ctx) {
    const {
@@ -51,6 +54,9 @@ async function login(ctx) {
    if (!result) {
       throw new Woops('login-error', '用户名密码错误');
    } else {
+      // * 生成token,放入用户信息
+      const token = authService.encode(result);
+      result.token = token;
       return result;
    }
 }
@@ -63,8 +69,9 @@ async function changePassword(ctx) {
          throw new Woops('password-illegal', '密码格式错误');
       }
 
-      // 获取id,从头部获取
-      const { user: userId } = ctx.header;
+      // 获取id,从头部token获取
+      const { authorization: token } = ctx.header;
+      const { _id: userId } = authService.verify(token);
 
       // 先查看旧密码是否正确
       const user = await findOne({ query: { _id: userId, password: oldPassword } });
@@ -102,9 +109,33 @@ async function userInfo(ctx) {
    }
 }
 
+async function getUsers() {
+   try {
+      const result = await find({ query: {}, fileds: { password: 0 } });
+
+      return result;
+   } catch (e) {
+      throw new Woops('database-error', e.message);
+   }
+}
+
+async function updateUser({ query, updated }) {
+   try {
+      const result = await update({
+         query,
+         updated,
+      });
+      return result;
+   } catch (e) {
+      throw new Woops(e.code, e.message);
+   }
+}
+
 module.exports = {
    regist,
    login,
    changePassword,
    userInfo,
+   getUsers,
+   updateUser,
 };

@@ -148,4 +148,61 @@ module.exports = (router) => {
  *           $ref: '#/definitions/ErrorResponse'
  */
    router.get('/user/userinfo', auth, controller.userInfo);
+
+   /**
+ * @swagger
+ *
+ * /user/users:
+ *   get:
+ *     description: 获取所有用户
+ *     parameters:
+ *     produces:
+ *       - application/json
+ *     responses:
+ *       200:
+ *         description: 用户列表
+ *         schema:
+ *           type: array
+ *           items:
+ *              $ref: '#/definitions/User'
+ *       500:
+ *         description: 请求失败
+ *         schema:
+ *           type: object
+ *           $ref: '#/definitions/ErrorResponse'
+ */
+   router.get('/user/users', auth, controller.getUsers);
+
+   /**
+ * @swagger
+ *
+ * /user:
+ *   put:
+ *     description: 更改用户信息
+ *     parameters:
+ *       - name: id
+ *         description: 用户id
+ *         in: formData
+ *         required: true
+ *         type: string
+ *       - name: integration
+ *         description: 积分
+ *         in: formData
+ *         required: true
+ *         type: number
+ *     produces:
+ *       - application/json
+ *     responses:
+ *       200:
+ *         description: 修改成功返回success：true
+ *         schema:
+ *           type: object
+ *           $ref: '#/definitions/NormalResponse'
+ *       500:
+ *         description: 请求失败
+ *         schema:
+ *           type: object
+ *           $ref: '#/definitions/ErrorResponse'
+ */
+   router.put('/user', auth, controller.updateUser);
 };

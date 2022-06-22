@@ -1,10 +1,11 @@
 const _ = require('lodash');
 const shopItemsModel = require('../models/shop');
+const authService = require('./auth');
 const usersModel = require('../models/users');
 const Woops = require('../common/error');
 
 /*
- * 积分商品列表
+ * 积分商品列表,上架的
 */
 async function shopList() {
    try {
@@ -18,14 +19,14 @@ async function shopList() {
  * 积分兑换
  */
 async function exchange(ctx) {
-   // 用户id,从header中获取
-   const { user: userId } = ctx.header;
-
+   // 用户id,从header中token获取
+   const { authorization: token } = ctx.header;
+   const { _id: userId } = authService.verify(token);
    // 商品id
    const { id } = ctx.request.body;
 
    // 先查看user内积分信息
-   const user = await usersModel.findOne({ query:{ _id: userId } });
+   const user = await usersModel.findOne({ query: { _id: userId } });
 
    let integration = _.get(user, 'integration', 0);
 
@@ -67,7 +68,7 @@ async function exchange(ctx) {
 async function exchangedRecord(ctx) {
    try {
       const { id } = ctx.request.query;
-      const result = await usersModel.findOne({ query:{ _id: id } });
+      const result = await usersModel.findOne({ query: { _id: id } });
 
       return _.get(result, 'record', []);
    } catch (error) {

@@ -73,9 +73,38 @@ async function userInfo(ctx, next) {
    ctx.response.body = result;
 }
 
+/*
+* 获取所有用户
+*/
+async function getUsers(ctx) {
+   const result = await userServices.getUsers();
+
+   ctx.response.body = result;
+}
+
+/*
+* 更新用户
+*/
+async function updateUser(ctx) {
+   const { id, integration } = ctx.request.body;
+
+   const result = await userServices.updateUser({
+      query: {
+         _id: id,
+      },
+      updated: {
+         integration,
+      },
+   });
+
+   ctx.response.body = result;
+}
+
 module.exports = {
    regist,
    login,
    changePassword,
    userInfo,
+   getUsers,
+   updateUser,
 };

@@ -39,6 +39,21 @@ module.exports = {
    *          type: string
    *        age:
    *          type: string
+   *        token:
+   *           type: string
+   *   User:
+   *      type: object
+   *      properties:
+   *        id:
+   *          type: string
+   *        username:
+   *          type: string
+   *        school:
+   *          type: string
+   *        nickname:
+   *          type: string
+   *        age:
+   *          type: string
    *   ShopItem:
    *      type: object
    *      properties:

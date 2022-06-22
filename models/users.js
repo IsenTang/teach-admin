@@ -10,6 +10,15 @@ async function insertOne(data) {
 }
 
 /**
+ * findAll
+ */
+async function find({ query, fileds }) {
+   const result = await UsersModel.find(query, fileds).lean().exec();
+
+   return result;
+}
+
+/**
  * findOne
  */
 async function findOne({ query }) {
@@ -31,4 +40,5 @@ module.exports = {
    insertOne,
    findOne,
    update,
+   find,
 };

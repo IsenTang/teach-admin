@@ -10,7 +10,7 @@ const usersSchema = new Schema({
    school: String,
    nickname: String,
    age: Number,
-   createdAt: { type: Date, default: new Date() },
+   createdAt: { type: Date, default: Date.now },
    integration: { type: Number, default: 500 }, // 积分
    record: { type: Array, default: [] },
 });

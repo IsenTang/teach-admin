@@ -1,14 +1,20 @@
 const joi = require('@hapi/joi');
-const { string } = require('@hapi/joi');
 const adminServices = require('../services/admin');
-const shopServices = require('../services/shop');
 const { validate } = require('../services/common');
 
 /*
  * 获取商品列表信息
 */
 async function getShopList(ctx, next) {
-   const result = await shopServices.shopList();
+   // 请求体检查
+   const schema = joi.object().keys({
+      page: joi.number().required(),
+      limit: joi.number().required(),
+   });
+
+   await validate(schema, ctx.request.query, next);
+   const { page, limit } = ctx.request.query;
+   const result = await adminServices.shopList({ page, limit });
 
    ctx.response.body = result;
 }
@@ -25,7 +31,7 @@ async function updateShopItem(ctx, next) {
             name: joi.string().required(),
             image: joi.string().required(),
             price: joi.alternatives().try(joi.string(),
-               joi.number().integer()).required()
+               joi.number().integer()).required(),
          },
       ).required(),
    });
@@ -53,16 +59,16 @@ async function insertShopItem(ctx, next) {
 
    await validate(schema, ctx.request.body, next);
 
-   // 插入
-   await adminServices.insertShopItem(ctx);
+   try {
+      // 插入
+      await adminServices.insertShopItem(ctx);
 
-   // 获取最新商品信息列表
-   const result = await shopServices.shopList();
-
-   ctx.response.body = {
-      success: true,
-      data: result,
-   };
+      ctx.response.body = {
+         success: true,
+      };
+   } catch (error) {
+      console.log(error);
+   }
 }
 
 /*
@@ -72,6 +78,7 @@ async function deleteShopItem(ctx, next) {
    // 请求体检查
    const schema = joi.object().keys({
       id: joi.string().required(),
+      isDeleted: joi.boolean(),
    });
 
    await validate(schema, ctx.request.body, next);

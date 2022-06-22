@@ -12,8 +12,18 @@ async function insertOne(data) {
 /*
  * 查找数据
 */
-async function find({ query }) {
-   const result = await ShopItemsModel.find(query).lean().exec();
+async function find({
+   query, sort, page, limit,
+}) {
+   const result = await ShopItemsModel.find(query)
+      .sort(sort).skip((Number(page) - 1) * Number(limit)).limit(Number(limit))
+      .lean()
+      .exec();
+   return result;
+}
+
+async function count() {
+   const result = await ShopItemsModel.find({}).count();
    return result;
 }
 
@@ -39,4 +49,5 @@ module.exports = {
    findOne,
    find,
    updateOne,
+   count,
 };

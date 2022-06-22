@@ -47,14 +47,14 @@ app.use(
    koaSwagger({
       routePrefix: '/swagger', // host at /swagger instead of default /docs
       swaggerOptions: {
-         url: 'http://49.235.98.65:3000/apijson', // example path to json
-         // url: 'http://localhost:3000/apijson',
+         // url: 'http://49.235.98.65:3000/apijson', // example path to json
+         url: 'http://localhost:3001/apijson',
       },
    }),
 );
 
 // 为swagger ui提供json格式数据
-router.get('/apijson', async (ctx, next) => {
+router.get('/apijson', async (ctx) => {
    // ctx.body = 'Hello World'
    ctx.body = swaggerSpec;
 });

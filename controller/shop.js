@@ -2,7 +2,7 @@ const shopServices = require('../services/shop');
 /*
  * 积分商品列表
 */
-async function shopList(ctx, next) {
+async function shopList(ctx) {
    const result = await shopServices.shopList();
 
    ctx.response.body = result;
@@ -11,7 +11,7 @@ async function shopList(ctx, next) {
 /*
  * 兑换商品
 */
-async function exchange(ctx, next) {
+async function exchange(ctx) {
    await shopServices.exchange(ctx);
 
    ctx.response.body = {
@@ -22,7 +22,7 @@ async function exchange(ctx, next) {
 /*
  * 兑换记录
  */
-async function exchangedRecord(ctx, next) {
+async function exchangedRecord(ctx) {
    const result = await shopServices.exchangedRecord(ctx);
 
    ctx.response.body = result;

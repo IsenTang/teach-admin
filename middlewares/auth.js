@@ -1,15 +1,15 @@
-const _ = require('lodash');
-const usersModel = require('../models/users');
+const authService = require('../services/auth');
 const Woops = require('../common/error');
 
 async function auth(ctx, next) {
-   const { user: userId } = ctx.header;
+   const { authorization: token } = ctx.header;
 
-   if (!userId) {
+   if (!token) {
       throw new Woops('auth-failed', '你需要先登录。');
    }
 
-   const result = await usersModel.findOne({ _id: userId });
+   // * 解析token
+   const result = authService.verify(token);
 
    if (!result) {
       throw new Woops('auth-failed', '你需要先登录。');
