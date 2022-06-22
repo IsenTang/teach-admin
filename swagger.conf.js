@@ -7,7 +7,7 @@ const swaggerDefinition = {
       version: '1.0.0', // Version (required)
       description: '管理后台api接口文档', // Description (optional)
    },
-   host: 'localhost:3000', // Host (optional)
+   host: 'http://49.235.98.65:3000', // Host (optional)
    basePath: '/', // Base path (optional)
 };
 
