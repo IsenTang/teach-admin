@@ -44,10 +44,19 @@ async function updateOne({ query, updated }) {
    return result;
 }
 
+/**
+ * find
+ */
+async function queryFind({ query }) {
+   const result = await ShopItemsModel.find(query);
+   return result;
+}
+
 module.exports = {
    insertOne,
    findOne,
    find,
    updateOne,
    count,
+   queryFind,
 };

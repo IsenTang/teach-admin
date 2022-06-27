@@ -90,9 +90,22 @@ async function deleteShopItem(ctx) {
    }
 }
 
+/**
+ * 查找商品
+*/
+async function findShopItem({ keyword }) {
+   const result = await shopItemsModel.queryFind({
+      query: {
+         name: { $regex: keyword, $options: 'i' },
+      },
+   });
+   return result;
+}
+
 module.exports = {
    insertShopItem,
    updateShopItem,
    deleteShopItem,
    shopList,
+   findShopItem,
 };
