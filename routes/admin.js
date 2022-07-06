@@ -40,6 +40,34 @@ module.exports = (router) => {
  * @swagger
  *
  * /admin/shopItem:
+ *   get:
+ *     description: 获取单个商品信息
+ *     parameters:
+ *       - name: id
+ *         description: 商品id
+ *         in: formData
+ *         required: true
+ *         type: string
+ *     produces:
+ *       - application/json
+ *     responses:
+ *       200:
+ *         description: 删除成功返回success：true
+ *         schema:
+ *           type: object
+ *           $ref: '#/definitions/ShopItem'
+ *       500:
+ *         description: 请求失败
+ *         schema:
+ *           type: object
+ *           $ref: '#/definitions/ErrorResponse'
+ */
+   router.get('/admin/shopItem', auth, controller.getShopItem);
+
+   /**
+ * @swagger
+ *
+ * /admin/shopItem:
  *   post:
  *     description: 添加 shop item
  *     parameters:

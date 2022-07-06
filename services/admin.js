@@ -102,10 +102,21 @@ async function findShopItem({ keyword }) {
    return result;
 }
 
+async function getShopItem({ id }) {
+   console.log('id: ', id);
+   const result = await shopItemsModel.findOne({
+      query: {
+         _id: id,
+      },
+   });
+   return result;
+}
+
 module.exports = {
    insertShopItem,
    updateShopItem,
    deleteShopItem,
    shopList,
    findShopItem,
+   getShopItem,
 };

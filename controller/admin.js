@@ -20,6 +20,25 @@ async function getShopList(ctx, next) {
 }
 
 /*
+ * 获取单个商品
+*/
+async function getShopItem(ctx, next) {
+   // 请求体检查
+   const schema = joi.object().keys({
+      id: joi.string().required(),
+   });
+
+   await validate(schema, ctx.request.query, next);
+
+   const data = await adminServices.getShopItem(ctx.request.query);
+
+   ctx.response.body = {
+      success: true,
+      data,
+   };
+}
+
+/*
  * 更新商品信息
 */
 async function updateShopItem(ctx, next) {
@@ -92,6 +111,7 @@ async function deleteShopItem(ctx, next) {
 
 module.exports = {
    getShopList,
+   getShopItem,
    updateShopItem,
    insertShopItem,
    deleteShopItem,
