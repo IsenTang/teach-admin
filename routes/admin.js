@@ -62,7 +62,7 @@ module.exports = (router) => {
  *           type: object
  *           $ref: '#/definitions/ErrorResponse'
  */
-   router.get('/admin/shopItem', auth, controller.getShopItem);
+   router.get('/admin/shopItem', controller.getShopItem);
 
    /**
  * @swagger

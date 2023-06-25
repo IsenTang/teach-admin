@@ -37,6 +37,9 @@ async function login(ctx, next) {
 
    const user = await userServices.login(ctx);
 
+   // * 通过用户权限，获取用户的菜单
+   const menu = await userServices.filterPermission(user.roles);
+   user.routes = menu;
    ctx.response.body = { success: true, user };
 }
 
@@ -86,7 +89,7 @@ async function getUsers(ctx) {
 * 更新用户
 */
 async function updateUser(ctx) {
-   const { id, integration } = ctx.request.body;
+   const { id, integration, roles } = ctx.request.body;
 
    const result = await userServices.updateUser({
       query: {
@@ -94,6 +97,7 @@ async function updateUser(ctx) {
       },
       updated: {
          integration,
+         roles,
       },
    });
 

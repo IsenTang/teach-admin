@@ -54,6 +54,10 @@ module.exports = {
    *          type: string
    *        age:
    *          type: string
+   *        roles:
+   *           type: array
+   *           items:
+   *               type: string
    *   ShopItem:
    *      type: object
    *      properties:
@@ -77,5 +81,38 @@ module.exports = {
    *        createdAt:
    *          type: string
    *          format: date-time
+   *   Role:
+   *      type: object
+   *      properties:
+   *        _id:
+   *          type: string
+   *        name:
+   *          type: string
+   *        createdAt:
+   *          type: string
+   *          format: date-time
+   *        permission:
+   *           type: array
+   *           items:
+   *              type: number
+   *   Route:
+   *      type: object
+   *      properties:
+   *        apiIds:
+   *          type: string
+   *        id:
+   *          type: string
+   *        isMobileOnly:
+   *          type: boolean
+   *        name:
+   *          type: string
+   *        nameEn:
+   *          type: string
+   *        paixu:
+   *          type: number
+   *        pid:
+   *          type: number
+   *        url:
+   *          type: string
    */
 };

@@ -13,6 +13,7 @@ const usersSchema = new Schema({
    createdAt: { type: Date, default: Date.now },
    integration: { type: Number, default: 500 }, // 积分
    record: { type: Array, default: [] },
+   roles: { type: Array },
 });
 
 const UsersModel = mongoose.model('users', usersSchema);

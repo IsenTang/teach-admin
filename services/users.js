@@ -5,6 +5,8 @@ const {
 const { checkName, checkPassword, getRandomAvatar } = require('../common/utils');
 const Woops = require('../common/error');
 const authService = require('./auth');
+const permissionList = require('../config/permissionTestList');
+const roleModel = require('../models/schema/role');
 
 async function regist(ctx) {
    const {
@@ -132,6 +134,23 @@ async function updateUser({ query, updated }) {
    }
 }
 
+async function filterPermission(roles) {
+   // * 根据roles获取所有的权限
+   const permissions = await Promise.all(roles.map((item) => roleModel.findOne({ name: item })));
+   // * 合并去重
+   let array = [];
+   permissions.forEach((item) => {
+      array = array.concat(item.permission);
+   });
+   array = [ ...new Set(array) ];
+   // * 获取一级菜单
+   let menu = permissionList.filter((item) => item.pid === 0);
+
+   // * 获取有权限的菜单
+   menu = menu.filter((item) => array.includes(item.id));
+   return menu;
+}
+
 module.exports = {
    regist,
    login,
@@ -139,4 +158,5 @@ module.exports = {
    userInfo,
    getUsers,
    updateUser,
+   filterPermission,
 };

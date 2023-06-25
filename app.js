@@ -47,8 +47,8 @@ app.use(
    koaSwagger({
       routePrefix: '/swagger', // host at /swagger instead of default /docs
       swaggerOptions: {
-         url: 'http://49.235.98.65:3000/apijson', // example path to json
-         // url: 'http://localhost:3000/apijson',
+         // url: 'http://49.235.98.65:3000/apijson', // example path to json
+         url: 'http://localhost:3000/apijson',
       },
    }),
 );

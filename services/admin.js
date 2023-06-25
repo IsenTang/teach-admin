@@ -103,7 +103,6 @@ async function findShopItem({ keyword }) {
 }
 
 async function getShopItem({ id }) {
-   console.log('id: ', id);
    const result = await shopItemsModel.findOne({
       query: {
          _id: id,

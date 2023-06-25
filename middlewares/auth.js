@@ -14,6 +14,7 @@ async function auth(ctx, next) {
    if (!result) {
       throw new Woops('auth-failed', '你需要先登录。');
    } else {
+      // ? 检测用户的权限，看能否执行对应操作
       await next();
    }
 }
